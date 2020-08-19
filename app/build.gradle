@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.canteenManagment.admin"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -38,4 +38,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //for bottom navigation bar
+    implementation 'com.ismaeldivita.chipnavigation:chip-navigation-bar:1.3.3'
 }
