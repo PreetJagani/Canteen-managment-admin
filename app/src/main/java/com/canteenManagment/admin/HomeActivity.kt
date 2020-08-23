@@ -1,16 +1,15 @@
 package com.canteenManagment.admin
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import com.canteenManagment.admin.BaseActivity.BaseActivity
 import com.canteenManagment.admin.Fragments.HomeFragment
 import com.canteenManagment.admin.Fragments.MenuFragment
 import com.canteenManagment.admin.Fragments.ProfileFragment
 import com.canteenManagment.admin.databinding.ActivityHomeBinding
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var binding : ActivityHomeBinding
 
@@ -22,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         openFragment(HomeFragment())
+        //setStatusBarColour()
         binding.chipNavigationBar.setItemSelected(R.id.home)
 
 

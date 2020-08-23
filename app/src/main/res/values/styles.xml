@@ -7,6 +7,36 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/mavenpro_medium</item>
+        <item name="android:statusBarColor">@color/whiteColour</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <style name="fragment_style">
+        <item name="android:background">@color/whiteColour</item>
+    </style>
+
+    <style name="title_style">
+        <item name="android:textSize">32sp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="fontFamily">@font/mavenpro_semi_bold</item>
+        <item name="android:textColor">@color/blackColour</item>
+    </style>
+
+    <style name="menu_title_style">
+        <item name="android:textSize">32sp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="fontFamily">@font/mavenpro_semi_bold</item>
+        <item name="android:textColor">@color/lightWhiteColour</item>
+    </style>
+
+    <style name="menu_card_view_style">
+        <item name="android:layout_marginTop">@dimen/medium</item>
+        <item name="android:layout_marginRight">@dimen/small</item>
+        <item name="android:layout_marginLeft">@dimen/small</item>
+        <item name="elevation">0dp</item>
+        <item name="cardCornerRadius">@dimen/small</item>
+
     </style>
 
 

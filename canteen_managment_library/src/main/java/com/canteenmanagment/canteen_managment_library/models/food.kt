@@ -13,7 +13,4 @@ class food(
 
 
 
-
-
-
 }
