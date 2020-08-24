@@ -7,11 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.FoodListActivity
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.FragmentMenuBinding
-import com.canteenManagment.admin.helper.showShortToast
 import com.canteenmanagment.canteen_managment_library.models.food
 
 
@@ -45,10 +43,10 @@ class MenuFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         var i = Intent(activity?.applicationContext,FoodListActivity::class.java)
         when(v?.id){
-            R.id.CL1 -> i.putExtra(TITLE_NAME,food.Category.SNACKS.value)
-            R.id.CL2 -> i.putExtra(TITLE_NAME,food.Category.FIX_THALI.value)
-            R.id.CL3 -> i.putExtra(TITLE_NAME,food.Category.DRINKS.value)
-            R.id.CL4 -> i.putExtra(TITLE_NAME,food.Category.PUNJABI_MEAL.value)
+            R.id.CL1 -> i.putExtra(CATEGORY_NAME,food.Category.SNACKS.value)
+            R.id.CL2 -> i.putExtra(CATEGORY_NAME,food.Category.FIX_THALI.value)
+            R.id.CL3 -> i.putExtra(CATEGORY_NAME,food.Category.DRINKS.value)
+            R.id.CL4 -> i.putExtra(CATEGORY_NAME,food.Category.PUNJABI_MEAL.value)
         }
 
         startActivity(i)
@@ -61,6 +59,6 @@ class MenuFragment : Fragment(), View.OnClickListener {
     }
 
     companion object{
-        val TITLE_NAME = "TITLE_NAME"
+        const val CATEGORY_NAME = "TITLE_NAME"
     }
 }

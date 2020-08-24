@@ -12,21 +12,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        style="@style/fragment_style"
         tools:context=".FoodListActivity">
 
         <ImageView
             android:id="@+id/IMback"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:layout_marginLeft="@dimen/small"
-            android:layout_marginTop="@dimen/medium"
-            android:src="@drawable/ic_arrow_back_24px"
+            style="@style/back_button_style"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/TVtitle"
-            style="@style/title_style"
+            style="@style/sub_title_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{title}"
@@ -34,6 +31,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FABadd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_24px"
+            android:layout_margin="@dimen/medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

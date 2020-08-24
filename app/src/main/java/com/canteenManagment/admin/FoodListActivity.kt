@@ -1,11 +1,11 @@
 package com.canteenManagment.admin
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.Fragments.MenuFragment.Companion.TITLE_NAME
+import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.databinding.ActivityFoodListBinding
 
 class FoodListActivity : BaseActivity(), View.OnClickListener {
@@ -17,10 +17,12 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_food_list)
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_food_list)
+        binding.title = intent.getStringExtra(CATEGORY_NAME)
 
         binding.IMback.setOnClickListener(this)
 
-        binding.title = intent.getStringExtra(TITLE_NAME)
+        binding.FABadd.setOnClickListener(this)
+
 
     }
 
@@ -28,9 +30,15 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
         when(v?.id){
 
-            R.id.IMback ->{
-                super.onBackPressed()
+            R.id.IMback -> super.onBackPressed()
+
+            R.id.FABadd -> {
+                var i = Intent(this,AddFoodActivity::class.java)
+                i.putExtra(CATEGORY_NAME,intent.getStringExtra(CATEGORY_NAME))
+                startActivity(i)
+                overridePendingTransition(R.anim.slide_in_bottom,android.R.anim.fade_out)
             }
+
 
 
         }
