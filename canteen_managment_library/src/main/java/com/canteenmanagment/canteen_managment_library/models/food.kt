@@ -12,5 +12,12 @@ class food(
     constructor() : this(null,null, emptyList<String>(),null,null,false)
 
 
+    enum class Category(val value : String) {
+        SNACKS("Snacks"),
+        FIX_THALI("Fix Thali"),
+        DRINKS("Drinks"),
+        PUNJABI_MEAL("Punjabi Meal")
+    }
+
 
 }

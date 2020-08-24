@@ -7,4 +7,6 @@ import com.canteenManagment.admin.R
 
 open class BaseActivity : AppCompatActivity() {
 
+
+
 }

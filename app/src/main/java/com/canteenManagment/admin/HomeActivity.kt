@@ -8,6 +8,7 @@ import com.canteenManagment.admin.Fragments.HomeFragment
 import com.canteenManagment.admin.Fragments.MenuFragment
 import com.canteenManagment.admin.Fragments.ProfileFragment
 import com.canteenManagment.admin.databinding.ActivityHomeBinding
+import com.canteenManagment.admin.helper.showShortToast
 
 class HomeActivity : BaseActivity() {
 
@@ -21,7 +22,6 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
 
         openFragment(HomeFragment())
-        //setStatusBarColour()
         binding.chipNavigationBar.setItemSelected(R.id.home)
 
 

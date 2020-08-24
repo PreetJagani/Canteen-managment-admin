@@ -47,5 +47,7 @@ dependencies {
     //for card view
     implementation 'com.google.android.material:material:1.2.0'
 
+    implementation project(':canteen_managment_library')
+
 
 }
