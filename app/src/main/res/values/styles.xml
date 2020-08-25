@@ -61,4 +61,12 @@
         <item name="android:textSize">@dimen/medium</item>
     </style>
 
+    <style name="btn_style">
+        <item name="background">@drawable/btn_style</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/whiteColour</item>
+        <item name="android:textSize">@dimen/medium</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

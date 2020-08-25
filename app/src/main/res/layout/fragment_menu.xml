@@ -33,7 +33,6 @@
             style="@style/menu_card_view_style"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:transitionName="open_transition"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/CL1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:transitionName="open_transition">
 
                 <TextView
                     style="@style/menu_title_style"
@@ -88,7 +88,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/CL2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:transitionName="open_transition">
 
                 <TextView
                     style="@style/menu_title_style"
@@ -126,7 +127,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/CL3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:transitionName="open_transition">
 
                 <TextView
                     style="@style/menu_title_style"
@@ -166,7 +168,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/CL4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:transitionName="open_transition">
 
                 <TextView
                     style="@style/menu_title_style"

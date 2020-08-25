@@ -9,8 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
-import com.canteenManagment.admin.FoodListActivity
-import com.canteenManagment.admin.HomeActivity
+import com.canteenManagment.admin.food.FoodListActivity
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.FragmentMenuBinding
 import com.canteenmanagment.canteen_managment_library.models.food
@@ -44,24 +43,25 @@ class MenuFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        var i = Intent(activity?.applicationContext,FoodListActivity::class.java)
+        var i = Intent(activity?.applicationContext,
+            FoodListActivity::class.java)
         var options : ActivityOptionsCompat? = null
         when(v?.id){
             R.id.CL1 -> {
                 i.putExtra(CATEGORY_NAME,food.Category.SNACKS.value)
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CV1,"open_transition")
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CL1,"open_transition")
             }
             R.id.CL2 -> {
                 i.putExtra(CATEGORY_NAME,food.Category.FIX_THALI.value)
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CV2,"open_transition")
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CL2,"open_transition")
             }
             R.id.CL3 ->{
                 i.putExtra(CATEGORY_NAME,food.Category.DRINKS.value)
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CV3,"open_transition")
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CL3,"open_transition")
             }
             R.id.CL4 -> {
                 i.putExtra(CATEGORY_NAME,food.Category.PUNJABI_MEAL.value)
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CV4,"open_transition")
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity as Activity,binding.CL4,"open_transition")
             }
         }
 
