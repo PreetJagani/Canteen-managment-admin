@@ -21,20 +21,23 @@
             style="@style/sub_title_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Add Food Item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Add Food Item" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TVtitle">
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/TVtitle"
+            app:layout_constraintVertical_bias="0.120000005"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TVname"
+                android:id="@+id/ETname"
                 style="@style/edit_text_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -43,23 +46,40 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="208dp"
             android:hint="Price"
-            app:suffixTextAppearance="@dimen/small"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
             app:suffixText="(In Rs.)"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:suffixTextAppearance="@dimen/small"
             tools:layout_editor_absoluteX="0dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TVPrice"
                 style="@style/edit_text_style"
-                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="24dp"
-                tools:layout_editor_absoluteY="493dp" />
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Counter Number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:suffixTextAppearance="@dimen/small">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TVCounterNumber"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
