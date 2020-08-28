@@ -9,9 +9,7 @@ import com.canteenManagment.admin.BaseActivity.BaseActivity
 import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityAddFoodBinding
-import com.canteenManagment.admin.helper.showShortToast
-import com.canteenmanagment.canteen_managment_library.apiManager.CustomeResult
-import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
+import com.canteenManagment.admin.helper.CustomProgressBar
 import com.canteenmanagment.canteen_managment_library.models.Food
 import kotlinx.coroutines.launch
 
@@ -19,6 +17,7 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddFoodBinding
     private val mContext : Context = this
+    private var progressBar = CustomProgressBar()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,15 +58,20 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener {
                 food.imageUrl = "no url"
                 food.available = true
 
+                progressBar.show(this)
+
                 scope.launch {
 
-                    FirebaseApiManager.storeFoodData(food).let {
+                    Thread.sleep(5000)
+                    progressBar.dialog.dismiss()
+                    /*FirebaseApiManager.storeFoodData(food).let {
+                        customDialog.dismissDiolog()
                         when(it.success){
                             true-> showShortToast(it.message,mContext)
 
                             false-> showShortToast(it.message,mContext)
                         }
-                    }
+                    }*/
 
 
                 }

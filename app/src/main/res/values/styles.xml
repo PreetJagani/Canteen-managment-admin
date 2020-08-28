@@ -69,4 +69,8 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="CustomProgressBarTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
