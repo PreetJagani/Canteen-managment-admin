@@ -1,3 +1,3 @@
 package com.canteenmanagment.canteen_managment_library.apiManager
 
-class CustomeResult(var success : Boolean = false, var message : String = "", var data : Any? = null)
+class CustomeResult(var isSuccess : Boolean = false, var message : String = "", var data : Any? = null)
