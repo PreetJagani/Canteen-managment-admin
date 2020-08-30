@@ -14,6 +14,12 @@
         android:icon="@drawable/ic_assignment_24px"
         app:cnb_iconColor="@color/colorPrimary"/>
 
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_profile_24px"
+        app:cnb_iconColor="@color/colorPrimary"/>
+
 
 
 
