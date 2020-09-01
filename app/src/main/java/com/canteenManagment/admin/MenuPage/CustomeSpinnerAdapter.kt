@@ -1,4 +1,4 @@
-package com.canteenManagment.admin.food
+package com.canteenManagment.admin.MenuPage
 
 import android.content.Context
 import android.view.LayoutInflater

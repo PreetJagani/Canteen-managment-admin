@@ -11,29 +11,49 @@ import kotlinx.coroutines.withContext
 
 object FirebaseApiManager {
 
+    private val foodDB = FirebaseFirestore.getInstance()
+
     suspend fun storeFoodData(food : Food): CustomeResult {
 
         return withContext(Dispatchers.IO){
 
-            var db = FirebaseFirestore.getInstance()
+            val foodDR = foodDB.collection(BaseUrl.FOOD).document()
 
-            var dr = db.collection(BaseUrl.FOOD).document()
-
-            food.id = dr.id
+            food.id = foodDR.id
             var map = Food.getMapFromFood(food)
 
-            var value = CustomeResult()
+            var result = CustomeResult()
 
-            dr.set(map).addOnCompleteListener {
-                value.isSuccess = true
-                value.message = "Food Added Successfully"
+            foodDR.set(map).addOnCompleteListener {
+                result.isSuccess = true
+                result.message = "Food Added Successfully"
             }.addOnFailureListener {
-                value.isSuccess = false
-                value.message = it.message?:"Error"
+                result.isSuccess = false
+                result.message = it.message?:"Error"
             }.await()
 
-            return@withContext value
+            return@withContext result
         }
+
+    }
+
+    suspend fun getAllFoodFromCategory(category : String): List<Food> {
+        val foodDR = foodDB.collection(BaseUrl.FOOD)
+
+        var result : CustomeResult = CustomeResult()
+
+        var snapshot = foodDR.whereEqualTo(Food.CATEGORY,category).get().addOnSuccessListener {
+            result.isSuccess = true
+        }.addOnFailureListener{
+            result.isSuccess = false
+            result.message = it.message.toString()
+        }.await()
+
+        var b = snapshot.documents.map {
+            Food.getFoodFromDocumentSnapShot(it.data!!)
+        }
+
+        return b
 
     }
 
@@ -48,7 +68,7 @@ object FirebaseApiManager {
 
                 var downloadUrl: String? = null
 
-                var reference: StorageReference? =
+                val reference: StorageReference? =
                     FirebaseStorage.getInstance().getReference(uploadPath)
 
                 val mref = reference!!.child(fileName)

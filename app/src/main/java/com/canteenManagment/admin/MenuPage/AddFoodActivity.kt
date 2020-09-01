@@ -1,4 +1,4 @@
-package com.canteenManagment.admin.food
+package com.canteenManagment.admin.MenuPage
 
 import android.annotation.SuppressLint
 import android.content.Context

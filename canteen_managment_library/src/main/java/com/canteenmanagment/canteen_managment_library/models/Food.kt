@@ -1,6 +1,6 @@
 package com.canteenmanagment.canteen_managment_library.models
 
-class Food(
+data class Food(
     var id : String?,
     var name : String?,
     var price : Int?,
@@ -29,6 +29,20 @@ class Food(
             map[CATEGORY] = food.category?:"default category"
 
             return map
+        }
+
+        fun getFoodFromDocumentSnapShot(map : MutableMap<String,Any>) : Food{
+
+            return Food(
+                id = map[ID] as String?,
+                name = map[NAME] as String?,
+                price = (map[PRICE] as Long).toInt(),
+                counterNumber = (map[COUNTER_NUMBER] as Long).toInt(),
+                imageUrl = map[IMAGE_URL] as String?,
+                category = map[CATEGORY] as String?,
+                available = map[AVAILABLE] as Boolean
+            )
+
         }
 
 

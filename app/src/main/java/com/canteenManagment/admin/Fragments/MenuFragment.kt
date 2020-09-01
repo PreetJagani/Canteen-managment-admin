@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
-import com.canteenManagment.admin.food.FoodListActivity
+import com.canteenManagment.admin.MenuPage.FoodListActivity
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.FragmentMenuBinding
 import com.canteenmanagment.canteen_managment_library.models.Food

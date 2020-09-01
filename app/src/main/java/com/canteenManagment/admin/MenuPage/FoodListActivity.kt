@@ -1,4 +1,4 @@
-package com.canteenManagment.admin.food
+package com.canteenManagment.admin.MenuPage
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,8 @@ import com.canteenManagment.admin.BaseActivity.BaseActivity
 import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityFoodListBinding
+import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
+import kotlinx.coroutines.launch
 
 class FoodListActivity : BaseActivity(), View.OnClickListener {
 
@@ -25,6 +27,13 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
         binding.IMback.setOnClickListener(this)
 
         binding.FABadd.setOnClickListener(this)
+
+        scope.launch {
+            FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
+
+            }
+        }
+
 
 
     }
