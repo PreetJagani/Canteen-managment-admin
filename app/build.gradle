@@ -57,6 +57,9 @@ dependencies {
     //lotie animaition
     implementation 'com.airbnb.android:lottie:2.8.0'
 
+    //glide to load image from url
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
 
     implementation project(':canteen_managment_library')
 

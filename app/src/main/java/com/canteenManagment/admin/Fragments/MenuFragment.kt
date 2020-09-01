@@ -14,7 +14,7 @@ import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.FragmentMenuBinding
 import com.canteenmanagment.canteen_managment_library.models.Food
 
-class MenuFragment : Fragment(), View.OnClickListener {
+class MenuFragment : Fragment(), View.OnClickListener, View.OnLongClickListener {
 
     private var _binding : FragmentMenuBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +37,12 @@ class MenuFragment : Fragment(), View.OnClickListener {
         binding.CL2.setOnClickListener(this)
         binding.CL3.setOnClickListener(this)
         binding.CL4.setOnClickListener(this)
+
+        binding.CL1.setOnLongClickListener(this)
+        binding.CL2.setOnLongClickListener(this)
+        binding.CL3.setOnLongClickListener(this)
+        binding.CL4.setOnLongClickListener(this)
+
 
         return binding?.root
     }
@@ -68,6 +74,10 @@ class MenuFragment : Fragment(), View.OnClickListener {
 
     }
 
+    override fun onLongClick(v: View?): Boolean {
+        return true
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
@@ -76,4 +86,6 @@ class MenuFragment : Fragment(), View.OnClickListener {
     companion object{
         const val CATEGORY_NAME = "TITLE_NAME"
     }
+
+
 }

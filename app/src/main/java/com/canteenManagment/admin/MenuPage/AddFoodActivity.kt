@@ -23,8 +23,8 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
 
     private lateinit var binding: ActivityAddFoodBinding
     private val mContext: Context = this
-    private val progressDiolog: CustomProgressBar = CustomProgressBar(this)
-    var imageUri: Uri? = null
+    private val progressDialog: CustomProgressBar = CustomProgressBar(this)
+    private var imageUri: Uri? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,11 +88,11 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
 
     private fun addFood() {
 
-        progressDiolog.startDialog()
+        progressDialog.startDialog()
         scope.launch {
             uploadImage().let {
 
-                progressDiolog.stopDiaolog()
+                progressDialog.stopDiaolog()
 
                 if (it.isSuccess){
 
@@ -104,12 +104,12 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     food.available = true
                     food.imageUrl = it.data.toString()
 
-                    progressDiolog.startDialog()
+                    progressDialog.startDialog()
 
                     scope.launch {
 
                         FirebaseApiManager.storeFoodData(food).let {
-                            progressDiolog.stopDiaolog()
+                            progressDialog.stopDiaolog()
                             when (it.isSuccess) {
                                 true -> showShortToast(it.message, mContext)
 

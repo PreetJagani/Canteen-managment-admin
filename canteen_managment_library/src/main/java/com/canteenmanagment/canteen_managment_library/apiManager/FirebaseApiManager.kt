@@ -100,7 +100,7 @@ object FirebaseApiManager {
     }
 
     object BaseUrl{
-        const val FOOD = "FoodTest"
+        const val FOOD = "Food"
     }
 
 }
