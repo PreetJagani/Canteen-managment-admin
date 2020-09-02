@@ -9,9 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small"
         app:cardCornerRadius="@dimen/small"
-        android:elevation="0dp">
+        android:elevation="0dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -33,7 +35,7 @@
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/IM_Food_Image"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Title" />
+                tools:text="Title"/>
 
             <TextView
                 android:id="@+id/TV_Price"

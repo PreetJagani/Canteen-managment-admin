@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MenuPage.EditFoodActivity" />
         <activity android:name=".MenuPage.AddFoodActivity" />
         <activity android:name=".MenuPage.FoodListActivity" />
         <activity android:name=".HomeActivity">

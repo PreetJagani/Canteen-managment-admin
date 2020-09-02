@@ -1,5 +1,7 @@
 package com.canteenmanagment.canteen_managment_library.models
 
+import java.io.Serializable
+
 data class Food(
     var id : String?,
     var name : String?,
@@ -8,7 +10,7 @@ data class Food(
     var counterNumber : Int?,
     var category : String?,
     var available : Boolean
-) {
+) : Serializable {
 
     constructor() : this(null,null,null, null,null,null,false)
 

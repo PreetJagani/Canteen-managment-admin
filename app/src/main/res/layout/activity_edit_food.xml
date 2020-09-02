@@ -3,10 +3,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MenuPage.AddFoodActivity">
+    tools:context=".MenuPage.EditFoodActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,7 +25,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Add Food Item" />
+            tools:text="Edit Food Item"/>
+
+        <TextView
+            android:id="@+id/TV_Delete_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium"
+            android:layout_marginRight="@dimen/small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TVtitle"
+            android:fontFamily="@font/mavenpro_bold"
+            android:textColor="@color/redColour"
+            android:text="Delete Item"
+            android:textSize="@dimen/medium"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -32,8 +46,8 @@
             android:layout_height="wrap_content"
             android:hint="Name"
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-            app:layout_constraintTop_toBottomOf="@+id/TVtitle"
-            app:layout_constraintVertical_bias="0.16000003"
+            app:layout_constraintTop_toBottomOf="@+id/TV_Delete_food"
+            app:layout_constraintVertical_bias="0.16"
             app:layout_constraintVertical_chainStyle="packed">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -89,7 +103,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/CV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_margin="@dimen/medium"
             app:cardCornerRadius="@dimen/medium"
             app:cardElevation="1dp"
@@ -122,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_style"
-            android:text="Add"
+            android:text="Update"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

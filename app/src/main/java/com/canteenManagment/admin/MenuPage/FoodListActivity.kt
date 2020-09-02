@@ -1,20 +1,26 @@
 package com.canteenManagment.admin.MenuPage
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.BaseActivity.BaseActivity
 import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityFoodListBinding
-import com.canteenManagment.admin.helper.CustomProgressBar
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
+import com.canteenmanagment.canteen_managment_library.models.Food
 import kotlinx.coroutines.launch
 
 class FoodListActivity : BaseActivity(), View.OnClickListener {
 
     lateinit var binding : ActivityFoodListBinding
+    private val mContext : Context = this
+    private lateinit var foodList: List<Food>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,7 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
         loadData()
 
+        //binding.SRRefreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_RING)
         binding.SRRefreshLayout.setOnRefreshListener {
             loadData()
         }
@@ -42,12 +49,19 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    fun loadData(){
+    private fun loadData(){
         scope.launch {
             FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
-                if(binding.SRRefreshLayout.isRefreshing)
-                    binding.SRRefreshLayout.isRefreshing = false
-                binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it)
+                binding.SRRefreshLayout.isRefreshing = false
+                foodList = it
+
+                binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it,
+                            FoodListRecyclerViewAdapter.clickListner { position ->
+
+                                val i = Intent(mContext,EditFoodActivity::class.java)
+                                i.putExtra(FOOD_ITEM,foodList.get(position))
+                                startActivity(i)
+                            })
             }
         }
     }
@@ -71,6 +85,10 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
         binding.CL.visibility = View.INVISIBLE
         super.onBackPressed()
 
+    }
+
+    companion object{
+        const val FOOD_ITEM = "Food Item"
     }
 
 
