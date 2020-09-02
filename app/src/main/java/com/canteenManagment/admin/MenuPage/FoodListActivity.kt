@@ -29,18 +29,27 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
         binding.FABadd.setOnClickListener(this)
 
+        loadData()
 
-
-
-        scope.launch {
-            FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
-
-                binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it)
-            }
+        binding.SRRefreshLayout.setOnRefreshListener {
+            loadData()
         }
 
 
 
+
+
+
+    }
+
+    fun loadData(){
+        scope.launch {
+            FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
+                if(binding.SRRefreshLayout.isRefreshing)
+                    binding.SRRefreshLayout.isRefreshing = false
+                binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it)
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -63,4 +72,6 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
         super.onBackPressed()
 
     }
+
+
 }
