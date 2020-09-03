@@ -16,6 +16,7 @@ import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity.Compan
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityEditFoodBinding
 import com.canteenManagment.admin.helper.CustomProgressBar
+import com.canteenManagment.admin.helper.DeleteCustomDiolog
 import com.canteenManagment.admin.helper.showShortToast
 import com.canteenManagment.admin.ui.FoodDetail.addFood.CustomeSpinnerAdapter
 import com.canteenmanagment.canteen_managment_library.apiManager.CustomeResult
@@ -28,6 +29,7 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
     private lateinit var binding: ActivityEditFoodBinding
     private val mContext: Context = this
     private val progressDialog: CustomProgressBar = CustomProgressBar(this)
+    private val deleteDialog: DeleteCustomDiolog = DeleteCustomDiolog(this)
     private var imageUri: Uri? = null
     private lateinit var food: Food
 
@@ -48,8 +50,6 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
 
         binding.ETname.setText(food.name.toString())
         binding.ETPrice.setText(food.price.toString())
-
-
 
         binding.SPCounterNumber.adapter = CustomeSpinnerAdapter(this, listOf(1, 2, 3, 4, 5))
         food.counterNumber?.let {
@@ -81,7 +81,9 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
 
             R.id.IM_Food_Image -> chooseImage()
 
-            R.id.TV_Delete_food -> deleteFood()
+            R.id.TV_Delete_food -> deleteDialog.startDialog{
+                deleteFood()
+            }
 
         }
     }
@@ -160,18 +162,15 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
                 return it
             }
 
-
         } else
             return CustomeResult(false,"Please Select image")
-
 
     }
 
     private fun deleteFood(){
         scope.launch {
-            progressDialog.startDialog()
             FirebaseApiManager.deleteFoodData(food).let {
-                progressDialog.stopDiaolog()
+                deleteDialog.stopDiaolog()
                 when (it.isSuccess) {
                     true -> showShortToast(it.message, mContext)
 
