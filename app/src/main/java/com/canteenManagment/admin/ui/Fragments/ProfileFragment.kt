@@ -1,4 +1,4 @@
-package com.canteenManagment.admin.Fragments
+package com.canteenManagment.admin.ui.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

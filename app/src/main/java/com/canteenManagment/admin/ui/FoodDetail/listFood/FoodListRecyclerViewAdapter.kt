@@ -1,10 +1,7 @@
-package com.canteenManagment.admin.MenuPage
+package com.canteenManagment.admin.ui.FoodDetail.listFood
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.solver.state.State
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy

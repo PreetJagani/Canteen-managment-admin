@@ -1,16 +1,16 @@
-package com.canteenManagment.admin.MenuPage
+package com.canteenManagment.admin.ui.FoodDetail.listFood
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
+import com.canteenManagment.admin.ui.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityFoodListBinding
+import com.canteenManagment.admin.ui.FoodDetail.addFood.AddFoodActivity
+import com.canteenManagment.admin.ui.FoodDetail.editFood.EditFoodActivity
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
 import com.canteenmanagment.canteen_managment_library.models.Food
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
                 binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it,
                             FoodListRecyclerViewAdapter.clickListner { position ->
 
-                                val i = Intent(mContext,EditFoodActivity::class.java)
+                                val i = Intent(mContext, EditFoodActivity::class.java)
                                 i.putExtra(FOOD_ITEM,foodList.get(position))
                                 startActivity(i)
                             })

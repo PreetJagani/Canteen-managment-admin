@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transitionName="open_transition"
-            tools:context=".MenuPage.FoodListActivity">
+            tools:context=".ui.FoodDetail.listFood.FoodListActivity">
 
             <ImageView
                 android:id="@+id/IMback"

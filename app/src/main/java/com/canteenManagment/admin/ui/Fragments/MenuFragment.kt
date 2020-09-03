@@ -1,4 +1,4 @@
-package com.canteenManagment.admin.Fragments
+package com.canteenManagment.admin.ui.Fragments
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
-import com.canteenManagment.admin.MenuPage.FoodListActivity
+import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.FragmentMenuBinding
 import com.canteenmanagment.canteen_managment_library.models.Food

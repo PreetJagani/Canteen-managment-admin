@@ -14,7 +14,6 @@ object FirebaseApiManager {
     private val foodDB = FirebaseFirestore.getInstance()
 
     suspend fun storeFoodData(food : Food): CustomeResult {
-
         return withContext(Dispatchers.IO){
 
             val foodDR = foodDB.collection(BaseUrl.FOOD).document()
@@ -34,8 +33,51 @@ object FirebaseApiManager {
 
             return@withContext result
         }
-
     }
+
+    suspend fun updateFoodData(food : Food): CustomeResult {
+        return withContext(Dispatchers.IO){
+
+            val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
+
+
+            var map = Food.getMapFromFood(food)
+
+            var result = CustomeResult()
+
+            foodDR?.set(map)?.addOnCompleteListener {
+                result.isSuccess = true
+                result.message = "Food Update Successfully"
+            }?.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message?:"Error"
+            }?.await()
+
+            return@withContext result
+        }
+    }
+
+    suspend fun deleteFoodData(food : Food): CustomeResult {
+        return withContext(Dispatchers.IO){
+
+            val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
+
+            var result = CustomeResult()
+
+            foodDR?.delete()?.addOnCompleteListener {
+                result.isSuccess = true
+                result.message = "Food Delete Successfully"
+            }?.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message?:"Error"
+            }?.await()
+
+            return@withContext result
+        }
+    }
+
+
+
 
     suspend fun getAllFoodFromCategory(category : String): List<Food> {
         val foodDR = foodDB.collection(BaseUrl.FOOD)
@@ -100,7 +142,7 @@ object FirebaseApiManager {
     }
 
     object BaseUrl{
-        const val FOOD = "Food"
+        const val FOOD = "FoodTest"
     }
 
 }

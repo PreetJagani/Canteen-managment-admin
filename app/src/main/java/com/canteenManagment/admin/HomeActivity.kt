@@ -4,11 +4,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.Fragments.HomeFragment
-import com.canteenManagment.admin.Fragments.MenuFragment
-import com.canteenManagment.admin.Fragments.ProfileFragment
+import com.canteenManagment.admin.ui.Fragments.HomeFragment
+import com.canteenManagment.admin.ui.Fragments.MenuFragment
+import com.canteenManagment.admin.ui.Fragments.ProfileFragment
 import com.canteenManagment.admin.databinding.ActivityHomeBinding
-import com.canteenManagment.admin.helper.showShortToast
 
 class HomeActivity : BaseActivity() {
 
