@@ -18,6 +18,7 @@ import com.canteenManagment.admin.helper.CustomProgressBar
 import com.canteenManagment.admin.helper.DeleteCustomDiolog
 import com.canteenManagment.admin.helper.showShortToast
 import com.canteenManagment.admin.ui.FoodDetail.addFood.CustomeSpinnerAdapter
+import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity
 import com.canteenmanagment.canteen_managment_library.apiManager.CustomeResult
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
 import com.canteenmanagment.canteen_managment_library.models.Food
@@ -130,7 +131,11 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
                         FirebaseApiManager.updateFoodData(food).let {
                             progressDialog.stopDiaolog()
                             when (it.isSuccess) {
-                                true -> showShortToast(it.message, mContext)
+                                true -> {
+                                    showShortToast(it.message, mContext)
+                                    setResult(FoodListActivity.DATA_CHANGE)
+                                    super.onBackPressed()
+                                }
 
                                 false -> showShortToast(it.message, mContext)
                             }
@@ -171,7 +176,11 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
             FirebaseApiManager.deleteFoodData(food).let {
                 deleteDialog.stopDiaolog()
                 when (it.isSuccess) {
-                    true -> showShortToast(it.message, mContext)
+                    true -> {
+                        showShortToast(it.message, mContext)
+                        setResult(FoodListActivity.DATA_CHANGE)
+                        super.onBackPressed()
+                    }
 
                     false -> showShortToast(it.message, mContext)
                 }

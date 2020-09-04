@@ -16,6 +16,7 @@ import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityAddFoodBinding
 import com.canteenManagment.admin.helper.CustomProgressBar
 import com.canteenManagment.admin.helper.showShortToast
+import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity.Companion.DATA_CHANGE
 import com.canteenmanagment.canteen_managment_library.apiManager.CustomeResult
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
 import com.canteenmanagment.canteen_managment_library.models.Food
@@ -61,7 +62,7 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     R.anim.slide_out_bottom
                 )
             }
-            R.id.BT_update -> addFood()
+            R.id.BT_add -> addFood()
 
             R.id.IM_Food_Image -> chooseImage()
 
@@ -95,7 +96,15 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                         FirebaseApiManager.storeFoodData(food).let {
                             progressDialog.stopDiaolog()
                             when (it.isSuccess) {
-                                true -> showShortToast(it.message, mContext)
+                                true -> {
+                                    showShortToast(it.message, mContext)
+                                    setResult(DATA_CHANGE)
+                                    super.onBackPressed()
+                                    overridePendingTransition(
+                                        R.anim.slide_in_top,
+                                        R.anim.slide_out_bottom
+                                    )
+                                }
 
                                 false -> showShortToast(it.message, mContext)
                             }

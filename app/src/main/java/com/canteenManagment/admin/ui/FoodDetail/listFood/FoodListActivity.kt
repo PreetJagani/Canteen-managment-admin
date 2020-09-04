@@ -54,13 +54,13 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
             FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
                 binding.SRRefreshLayout.isRefreshing = false
                 foodList = it
-
+                binding.RVFoodList.visibility = View.VISIBLE
                 binding.RVFoodList.adapter = FoodListRecyclerViewAdapter(it,
                             FoodListRecyclerViewAdapter.clickListner { position ->
 
                                 val i = Intent(mContext, EditFoodActivity::class.java)
                                 i.putExtra(FOOD_ITEM,foodList.get(position))
-                                startActivity(i)
+                                startActivityForResult(i, DATA_CHANGE)
                             })
             }
         }
@@ -75,7 +75,7 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
             R.id.FABadd -> {
                 var i = Intent(this, AddFoodActivity::class.java)
                 i.putExtra(CATEGORY_NAME,intent.getStringExtra(CATEGORY_NAME))
-                startActivity(i)
+                startActivityForResult(i, DATA_CHANGE)
                 overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_top)
             }
         }
@@ -87,8 +87,20 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == DATA_CHANGE){
+            binding.RVFoodList.visibility = View.GONE
+            loadData()
+        }
+    }
+
     companion object{
         const val FOOD_ITEM = "Food Item"
+        const val DATA_CHANGE = 2002
+
     }
 
 
