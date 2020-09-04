@@ -41,7 +41,7 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
         binding.IMback.setOnClickListener(this)
         binding.TVtitle.text = "Add ${intent.getStringExtra(CATEGORY_NAME)}"
 
-        binding.BTadd.setOnClickListener(this)
+        binding.BTAdd.setOnClickListener(this)
 
         binding.SPCounterNumber.adapter = CustomeSpinnerAdapter(this, listOf(1, 2, 3, 4, 5))
 
@@ -61,7 +61,7 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     R.anim.slide_out_bottom
                 )
             }
-            R.id.BTadd -> addFood()
+            R.id.BT_update -> addFood()
 
             R.id.IM_Food_Image -> chooseImage()
 

@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.ui.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity.Companion.FOOD_ITEM
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityEditFoodBinding
@@ -64,8 +63,8 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
             .error(R.drawable.error_image)
             .into(binding.IMFoodImage)
 
-        binding.BTadd.setOnClickListener(this)
-        binding.TVDeleteFood.setOnClickListener(this)
+        binding.BTUpdate.setOnClickListener(this)
+        binding.BTDeleteFood.setOnClickListener(this)
 
         binding.IMFoodImage.setOnClickListener(this)
         binding.IMFoodImage.setOnLongClickListener(this)
@@ -77,11 +76,11 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
             R.id.IMback -> {
                 super.onBackPressed()
             }
-            R.id.BTadd -> updateFood()
+            R.id.BT_update -> updateFood()
 
             R.id.IM_Food_Image -> chooseImage()
 
-            R.id.TV_Delete_food -> deleteDialog.startDialog{
+            R.id.BT_Delete_food -> deleteDialog.startDialog{
                 deleteFood()
             }
 

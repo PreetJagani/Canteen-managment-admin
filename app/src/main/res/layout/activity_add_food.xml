@@ -93,7 +93,7 @@
             android:layout_margin="@dimen/medium"
             app:cardCornerRadius="@dimen/medium"
             app:cardElevation="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/BTadd"
+            app:layout_constraintBottom_toTopOf="@+id/BT_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/SP_Counter_Number">
@@ -116,7 +116,7 @@
 
 
         <Button
-            android:id="@+id/BTadd"
+            android:id="@+id/BT_add"
             style="@style/btn_style"
             android:layout_marginTop="@dimen/large"
             android:layout_width="wrap_content"
