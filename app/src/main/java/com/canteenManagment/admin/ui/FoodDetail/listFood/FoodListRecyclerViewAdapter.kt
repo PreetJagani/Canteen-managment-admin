@@ -9,7 +9,7 @@ import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ItemFoodListLayoutBinding
 import com.canteenmanagment.canteen_managment_library.models.Food
 
-class FoodListRecyclerViewAdapter(val foodList : List<Food>, val listner: clickListner) : RecyclerView.Adapter<FoodListRecyclerViewAdapter.ViewHolder>() {
+class FoodListRecyclerViewAdapter(val foodList : List<Food>, val listner: ClickListner) : RecyclerView.Adapter<FoodListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -21,8 +21,20 @@ class FoodListRecyclerViewAdapter(val foodList : List<Food>, val listner: clickL
         holder.binding.TVTitle.text = foodList.get(position).name
         holder.binding.TVPrice.text = foodList.get(position).price.toString() + " Rs."
 
+        holder.binding.TBAvailable.isChecked = foodList.get(position).available
+
         holder.binding.CL.setOnClickListener {
             listner.openActivity(position)
+        }
+        holder.binding.TBAvailable.setOnClickListener {
+            if(holder.binding.TBAvailable.isChecked){
+                listner.changeFoodStatus(position,true)
+            }
+            else{
+                listner.changeFoodStatus(position,false)
+            }
+
+
         }
 
 
@@ -42,6 +54,6 @@ class FoodListRecyclerViewAdapter(val foodList : List<Food>, val listner: clickL
 
     class ViewHolder(var binding: ItemFoodListLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
-    class clickListner(val openActivity : (position : Int)-> Unit)
+    class ClickListner(val openActivity : (position : Int)-> Unit,val changeFoodStatus : (position : Int, status : Boolean) -> Unit)
 
 }
