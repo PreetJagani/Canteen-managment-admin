@@ -53,8 +53,15 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
 
         binding.SPCounterNumber.adapter = CustomeSpinnerAdapter(this, listOf(1, 2, 3, 4, 5))
         food.counterNumber?.let {
-            binding.SPCounterNumber.setSelection(it-1)
+            binding.SPCounterNumber.setSelection(it-1,true)
         }
+        if(food.availableTimes?.contains("Morning") == true)
+            binding.CHMorning.isChecked = true
+        if(food.availableTimes?.contains("Afternoon") == true)
+            binding.CHAfternoon.isChecked = true
+        if(food.availableTimes?.contains("Evening") == true)
+            binding.CHEvening.isChecked = true
+
 
         Glide.with(this)
             .load(food.imageUrl)
@@ -69,6 +76,22 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
 
         binding.IMFoodImage.setOnClickListener(this)
         binding.IMFoodImage.setOnLongClickListener(this)
+    }
+
+    private fun getSelectedChip() : List<String>{
+
+        var timeList = mutableListOf<String>()
+
+        if(binding.CHMorning.isChecked)
+            timeList.add("Morning")
+
+        if(binding.CHAfternoon.isChecked)
+            timeList.add("Afternoon")
+
+        if(binding.CHEvening.isChecked)
+            timeList.add("Evening")
+
+        return timeList
     }
 
     override fun onClick(v: View?) {
@@ -120,6 +143,8 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
                     food.name = binding.ETname.text.toString().trim()
                     food.price = binding.ETPrice.text.toString().trim().toInt()
                     food.counterNumber = binding.SPCounterNumber.selectedItemPosition + 1
+
+                    food.availableTimes = getSelectedChip()
 
                     if(it.data != null)
                         food.imageUrl = it.data.toString()

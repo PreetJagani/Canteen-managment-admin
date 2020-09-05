@@ -9,10 +9,11 @@ data class Food(
     var imageUrl : String?,
     var counterNumber : Int?,
     var category : String?,
-    var available : Boolean
+    var available : Boolean,
+    var availableTimes : List<String>?
 ) : Serializable {
 
-    constructor() : this(null,null,null, null,null,null,false)
+    constructor() : this(null,null,null, null,null,null,false,null)
 
 
 
@@ -29,6 +30,7 @@ data class Food(
             map[COUNTER_NUMBER] = food.counterNumber?:0
             map[AVAILABLE] = food.available
             map[CATEGORY] = food.category?:"default category"
+            map[AVAILABLE_TIMES] = food.availableTimes?: emptyList<String>()
 
             return map
         }
@@ -42,7 +44,8 @@ data class Food(
                 counterNumber = (map[COUNTER_NUMBER] as Long).toInt(),
                 imageUrl = map[IMAGE_URL] as String?,
                 category = map[CATEGORY] as String?,
-                available = map[AVAILABLE] as Boolean
+                available = map[AVAILABLE] as Boolean,
+                availableTimes = (map[AVAILABLE_TIMES]?: emptyList<String>()) as List<String>
             )
 
         }
@@ -55,6 +58,7 @@ data class Food(
         const val COUNTER_NUMBER = "counterNumber"
         const val CATEGORY = "Category"
         const val AVAILABLE = "available"
+        const val AVAILABLE_TIMES = "availableTimes"
     }
 
 

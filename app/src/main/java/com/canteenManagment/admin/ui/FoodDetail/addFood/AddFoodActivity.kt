@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.databinding.DataBindingUtil
@@ -50,6 +51,8 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
         binding.IMFoodImage.setOnLongClickListener(this)
 
 
+
+
     }
 
     override fun onClick(v: View?) {
@@ -88,6 +91,9 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     food.category = intent.getStringExtra(CATEGORY_NAME)
                     food.available = true
                     food.imageUrl = it.data.toString()
+
+                    food.availableTimes = getSelectedChip()
+                    Log.d("AvailableTimes",food.availableTimes.toString())
 
                     progressDialog.startDialog()
 
@@ -149,6 +155,22 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, CHOOSE_IMAGE)
+    }
+
+    private fun getSelectedChip() : List<String>{
+
+        var timeList = mutableListOf<String>()
+
+        if(binding.CHMorning.isChecked)
+            timeList.add("Morning")
+
+        if(binding.CHAfternoon.isChecked)
+            timeList.add("Afternoon")
+
+        if(binding.CHEvening.isChecked)
+            timeList.add("Evening")
+
+        return timeList
     }
 
     override fun onBackPressed() {

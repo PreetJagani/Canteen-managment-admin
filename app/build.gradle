@@ -63,6 +63,8 @@ dependencies {
     //custome swipe to refresh
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
 
+    implementation 'com.google.android.material:material:1.3.0-alpha02'
+
 
     implementation project(':canteen_managment_library')
 
