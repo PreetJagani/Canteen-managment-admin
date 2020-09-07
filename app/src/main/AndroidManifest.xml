@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".food.AddFoodActivity" />
-        <activity android:name=".food.FoodListActivity" />
+        <activity android:name="com.canteenManagment.admin.ui.FoodDetail.editFood.EditFoodActivity" />
+        <activity android:name="com.canteenManagment.admin.ui.FoodDetail.addFood.AddFoodActivity" />
+        <activity android:name="com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity" />
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

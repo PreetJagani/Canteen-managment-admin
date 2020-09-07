@@ -1,19 +1,23 @@
-package com.canteenManagment.admin.food
+package com.canteenManagment.admin.ui.FoodDetail.addFood
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.Fragments.MenuFragment.Companion.CATEGORY_NAME
+import com.canteenManagment.admin.ui.Fragments.MenuFragment.Companion.CATEGORY_NAME
 import com.canteenManagment.admin.R
 import com.canteenManagment.admin.databinding.ActivityAddFoodBinding
 import com.canteenManagment.admin.helper.CustomProgressBar
 import com.canteenManagment.admin.helper.showShortToast
+import com.canteenManagment.admin.ui.FoodDetail.listFood.FoodListActivity.Companion.DATA_CHANGE
 import com.canteenmanagment.canteen_managment_library.apiManager.CustomeResult
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
 import com.canteenmanagment.canteen_managment_library.models.Food
@@ -23,8 +27,8 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
 
     private lateinit var binding: ActivityAddFoodBinding
     private val mContext: Context = this
-    private val progressDiolog: CustomProgressBar = CustomProgressBar(this)
-    var imageUri: Uri? = null
+    private val progressDialog: CustomProgressBar = CustomProgressBar(this)
+    private var imageUri: Uri? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +43,14 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
         binding.IMback.setOnClickListener(this)
         binding.TVtitle.text = "Add ${intent.getStringExtra(CATEGORY_NAME)}"
 
-        binding.BTadd.setOnClickListener(this)
+        binding.BTAdd.setOnClickListener(this)
 
         binding.SPCounterNumber.adapter = CustomeSpinnerAdapter(this, listOf(1, 2, 3, 4, 5))
 
         binding.IMFoodImage.setOnClickListener(this)
         binding.IMFoodImage.setOnLongClickListener(this)
+
+
 
 
     }
@@ -59,40 +65,22 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     R.anim.slide_out_bottom
                 )
             }
-            R.id.BTadd -> addFood()
+            R.id.BT_add -> addFood()
 
             R.id.IM_Food_Image -> chooseImage()
 
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(
-            R.anim.slide_in_top,
-            R.anim.slide_out_bottom
-        )
-    }
 
-    override fun onLongClick(v: View?): Boolean {
-        return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.data != null) {
-            imageUri = data.data
-            binding.IMFoodImage.setImageURI(data.data)
-        }
-    }
 
     private fun addFood() {
 
-        progressDiolog.startDialog()
+        progressDialog.startDialog()
         scope.launch {
             uploadImage().let {
 
-                progressDiolog.stopDiaolog()
+                progressDialog.stopDiaolog()
 
                 if (it.isSuccess){
 
@@ -104,26 +92,34 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     food.available = true
                     food.imageUrl = it.data.toString()
 
-                    progressDiolog.startDialog()
+                    food.availableTimes = getSelectedChip()
+                    Log.d("AvailableTimes",food.availableTimes.toString())
+
+                    progressDialog.startDialog()
 
                     scope.launch {
 
                         FirebaseApiManager.storeFoodData(food).let {
-                            progressDiolog.stopDiaolog()
+                            progressDialog.stopDiaolog()
                             when (it.isSuccess) {
-                                true -> showShortToast(it.message, mContext)
+                                true -> {
+                                    showShortToast(it.message, mContext)
+                                    setResult(DATA_CHANGE)
+                                    super.onBackPressed()
+                                    overridePendingTransition(
+                                        R.anim.slide_in_top,
+                                        R.anim.slide_out_bottom
+                                    )
+                                }
 
                                 false -> showShortToast(it.message, mContext)
                             }
                         }
                     }
-
                 }
 
                 else
                     showShortToast(it.message,mContext)
-
-
             }
 
         }
@@ -160,6 +156,50 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, CHOOSE_IMAGE)
     }
+
+    private fun getSelectedChip() : List<String>{
+
+        var timeList = mutableListOf<String>()
+
+        if(binding.CHMorning.isChecked)
+            timeList.add("Morning")
+
+        if(binding.CHAfternoon.isChecked)
+            timeList.add("Afternoon")
+
+        if(binding.CHEvening.isChecked)
+            timeList.add("Evening")
+
+        return timeList
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(
+            R.anim.slide_in_top,
+            R.anim.slide_out_bottom
+        )
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.data != null) {
+            imageUri = data.data
+
+            Glide.with(this)
+                .load(imageUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .placeholder(R.drawable.error_image)
+                .error(R.drawable.error_image)
+                .into(binding.IMFoodImage)
+        }
+    }
+
 
     companion object {
         const val CHOOSE_IMAGE = 2001

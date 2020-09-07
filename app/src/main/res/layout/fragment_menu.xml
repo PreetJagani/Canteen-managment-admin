@@ -16,7 +16,7 @@
         style="@style/fragment_style"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Fragments.MenuFragment">
+        tools:context=".ui.Fragments.MenuFragment">
 
         <TextView
             android:id="@+id/textView"
