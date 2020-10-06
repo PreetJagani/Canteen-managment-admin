@@ -77,8 +77,6 @@ object FirebaseApiManager {
     }
 
 
-
-
     suspend fun getAllFoodFromCategory(category : String): List<Food> {
         val foodDR = foodDB.collection(BaseUrl.FOOD)
 
