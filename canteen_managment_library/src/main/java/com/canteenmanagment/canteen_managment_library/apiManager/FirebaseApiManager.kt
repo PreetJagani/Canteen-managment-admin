@@ -6,7 +6,6 @@ import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +18,8 @@ object FirebaseApiManager {
     private val foodDB = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().uid
 
-    suspend fun storeFoodData(food : Food): CustomeResult {
-        return withContext(Dispatchers.IO){
+    suspend fun storeFoodData(food: Food): CustomeResult {
+        return withContext(Dispatchers.IO) {
 
             val foodDR = foodDB.collection(BaseUrl.FOOD).document()
 
@@ -34,15 +33,15 @@ object FirebaseApiManager {
                 result.message = "Food Added Successfully"
             }.addOnFailureListener {
                 result.isSuccess = false
-                result.message = it.message?:"Error"
+                result.message = it.message ?: "Error"
             }.await()
 
             return@withContext result
         }
     }
 
-    suspend fun updateFoodData(food : Food): CustomeResult {
-        return withContext(Dispatchers.IO){
+    suspend fun updateFoodData(food: Food): CustomeResult {
+        return withContext(Dispatchers.IO) {
 
             val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
 
@@ -56,15 +55,15 @@ object FirebaseApiManager {
                 result.message = "Food Update Successfully"
             }?.addOnFailureListener {
                 result.isSuccess = false
-                result.message = it.message?:"Error"
+                result.message = it.message ?: "Error"
             }?.await()
 
             return@withContext result
         }
     }
 
-    suspend fun deleteFoodData(food : Food): CustomeResult {
-        return withContext(Dispatchers.IO){
+    suspend fun deleteFoodData(food: Food): CustomeResult {
+        return withContext(Dispatchers.IO) {
 
             val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
 
@@ -75,7 +74,7 @@ object FirebaseApiManager {
                 result.message = "Food Delete Successfully"
             }?.addOnFailureListener {
                 result.isSuccess = false
-                result.message = it.message?:"Error"
+                result.message = it.message ?: "Error"
             }?.await()
 
             return@withContext result
@@ -83,14 +82,14 @@ object FirebaseApiManager {
     }
 
 
-    suspend fun getAllFoodFromCategory(category : String): List<Food> {
+    suspend fun getAllFoodFromCategory(category: String): List<Food> {
         val foodDR = foodDB.collection(BaseUrl.FOOD)
 
-        var result : CustomeResult = CustomeResult()
+        var result: CustomeResult = CustomeResult()
 
-        var snapshot = foodDR.whereEqualTo(Food.CATEGORY,category).get().addOnSuccessListener {
+        var snapshot = foodDR.whereEqualTo(Food.CATEGORY, category).get().addOnSuccessListener {
             result.isSuccess = true
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             result.isSuccess = false
             result.message = it.message.toString()
         }.await()
@@ -108,7 +107,7 @@ object FirebaseApiManager {
         fileName: String,
         uploadPath: String
     ): CustomeResult {
-        var result : CustomeResult = CustomeResult()
+        var result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
             try {
 
@@ -149,7 +148,7 @@ object FirebaseApiManager {
         foodList: MutableList<CartFood>
     ): CustomeResult {
 
-        var result : CustomeResult = CustomeResult()
+        var result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
             try {
                 val orderDR = foodDB.collection(BaseUrl.ORDER).document()
@@ -168,8 +167,7 @@ object FirebaseApiManager {
                 }.await()
 
                 result
-            }
-            catch (e : Exception){
+            } catch (e: Exception) {
                 result.isSuccess = false
                 result.message = e.message.toString()
                 result
@@ -177,13 +175,59 @@ object FirebaseApiManager {
         }
     }
 
+    suspend fun getOngoingOrder(): CustomeResult {
+        val orderDR = foodDB.collection(BaseUrl.ORDER)
+
+        var uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR.whereEqualTo(Order.UID, uid)
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+
+    }
+
+    suspend fun getAllOrders(): CustomeResult {
+        val orderDR = foodDB.collection(BaseUrl.ORDER)
+
+        var uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR.whereEqualTo(Order.UID, uid)
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+
+    }
 
 
-
-    object BaseUrl{
+    object BaseUrl {
         const val FOOD = "Food"
         const val ORDER = "Order"
-        const val USER = "User"
     }
 
 }
