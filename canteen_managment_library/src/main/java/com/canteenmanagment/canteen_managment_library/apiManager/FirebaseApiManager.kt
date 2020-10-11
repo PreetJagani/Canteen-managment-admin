@@ -1,17 +1,23 @@
 package com.canteenmanagment.canteen_managment_library.apiManager
 
 import android.net.Uri
+import com.canteenmanagment.canteen_managment_library.models.CartFood
 import com.canteenmanagment.canteen_managment_library.models.Food
+import com.canteenmanagment.canteen_managment_library.models.Order
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.*
 
 object FirebaseApiManager {
 
     private val foodDB = FirebaseFirestore.getInstance()
+    private val uid = FirebaseAuth.getInstance().uid
 
     suspend fun storeFoodData(food : Food): CustomeResult {
         return withContext(Dispatchers.IO){
@@ -139,8 +145,45 @@ object FirebaseApiManager {
 
     }
 
+    suspend fun placeOrderInSystem(
+        foodList: MutableList<CartFood>
+    ): CustomeResult {
+
+        var result : CustomeResult = CustomeResult()
+        return withContext(Dispatchers.IO) {
+            try {
+                val orderDR = foodDB.collection(BaseUrl.ORDER).document()
+                val order = Order()
+                order.id = orderDR.id
+                order.foodList = foodList
+                order.status = Order.Status.INPROGRESS.value
+                order.uId = uid
+                order.time = Date().time
+
+                orderDR.set(Order.getMapFromOrder(order)).addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
+
+                result
+            }
+            catch (e : Exception){
+                result.isSuccess = false
+                result.message = e.message.toString()
+                result
+            }
+        }
+    }
+
+
+
+
     object BaseUrl{
         const val FOOD = "Food"
+        const val ORDER = "Order"
+        const val USER = "User"
     }
 
 }
