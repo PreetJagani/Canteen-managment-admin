@@ -40,5 +40,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-firestore:21.5.0' // for data storage
     implementation 'com.google.firebase:firebase-storage:19.2.0' //for file storage
+    implementation 'com.google.firebase:firebase-auth:19.4.0' // firebase auth
 
 }

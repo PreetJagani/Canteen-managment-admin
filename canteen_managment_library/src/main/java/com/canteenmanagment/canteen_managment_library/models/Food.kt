@@ -15,8 +15,6 @@ data class Food(
 
     constructor() : this(null,null,null, null,null,null,false,null)
 
-
-
     companion object{
 
         fun getMapFromFood(food : Food): MutableMap<String, Any> {
