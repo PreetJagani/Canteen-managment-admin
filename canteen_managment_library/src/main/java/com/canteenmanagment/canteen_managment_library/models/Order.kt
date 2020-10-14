@@ -7,10 +7,11 @@ data class Order(
     var foodList: MutableList<CartFood>?,
     var status: String?,
     var uId: String?,
-    var time: Long?
+    var time: Long?,
+    var transactionId : String?
 ) : Serializable {
 
-    constructor() : this(null,null,null,null,null)
+    constructor() : this(null,null,null,null,null,null)
 
     companion object{
         fun getMapFromOrder(order: Order) : MutableMap<String,Any> {
@@ -22,7 +23,7 @@ data class Order(
             map[STATUS] = order.status?:""
             map[UID] = order.uId?:""
             map[TIME] = order.time?:0
-
+            map[TRANSACTION_ID] = order.transactionId?:""
             return map
         }
 
@@ -33,7 +34,8 @@ data class Order(
                 foodList = map[FOOD_LIST] as MutableList<CartFood>,
                 status = map[STATUS] as String,
                 uId = map[UID] as String,
-                time = map[TIME] as Long
+                time = map[TIME] as Long,
+                transactionId = map[TRANSACTION_ID] as String
             )
         }
 
@@ -42,12 +44,12 @@ data class Order(
         const val STATUS = "status"
         const val UID = "uId"
         const val TIME = "time"
+        const val TRANSACTION_ID = "transactionId"
     }
-
 
     enum class Status(var value: String) {
         SUCCESS("Success"),
-        CANCEL("Cancel"),
+        READY("Ready"),
         INPROGRESS("In Progress")
     }
 
