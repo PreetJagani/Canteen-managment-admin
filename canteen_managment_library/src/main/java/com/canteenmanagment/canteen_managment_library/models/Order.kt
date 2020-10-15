@@ -31,7 +31,7 @@ data class Order(
 
             return Order(
                 id = map[ID] as String,
-                foodList = map[FOOD_LIST] as MutableList<CartFood>,
+                foodList = CartFood.getListFromListMap(map[FOOD_LIST] as List<Any>),
                 status = map[STATUS] as String,
                 uId = map[UID] as String,
                 time = map[TIME] as Long,
