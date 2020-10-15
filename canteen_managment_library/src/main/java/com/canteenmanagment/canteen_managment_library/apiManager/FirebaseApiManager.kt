@@ -6,6 +6,7 @@ import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -181,7 +182,7 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -203,7 +204,7 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.READY.value)
+            .whereEqualTo(Order.STATUS, Order.Status.READY.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -226,7 +227,7 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS,Order.Status.SUCCESS.value)
+            .whereEqualTo(Order.STATUS,Order.Status.SUCCESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -239,7 +240,6 @@ object FirebaseApiManager {
             result.data = snapshot.documents.map {
                 Order.getOrderFromDocumentSnapShot(it.data!!)
             }
-
         return result
 
     }
