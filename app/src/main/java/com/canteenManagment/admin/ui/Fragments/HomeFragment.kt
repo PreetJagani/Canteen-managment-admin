@@ -23,11 +23,8 @@ class HomeFragment : Fragment() {
     ): View? {
 
         /*scope.launch {
-            FirebaseApiManager.getAllPastOrders().let {
-                val data = it.data as List<Order>
-                for(a in data)
-                    for (b in a.foodList!!)
-                        Log.d("Cart",b.toString())
+            FirebaseApiManager.getReadyOrder().let {
+
             }
         }*/
 
