@@ -12,7 +12,7 @@ android {
         applicationId "com.canteenManagment.admin"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 7
+        versionCode 8
         versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
