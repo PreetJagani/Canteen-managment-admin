@@ -146,10 +146,11 @@ object FirebaseApiManager {
     }
 
     suspend fun placeOrderInSystem(
-        foodList: MutableList<CartFood>
+        foodList: MutableList<CartFood>,
+        transactionID : String
     ): CustomeResult {
 
-        var result: CustomeResult = CustomeResult()
+        val result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
             try {
                 val orderDR = foodDB.collection(BaseUrl.ORDER).document()
@@ -159,6 +160,7 @@ object FirebaseApiManager {
                 order.status = Order.Status.INPROGRESS.value
                 order.uId = uid
                 order.time = Date().time
+                order.transactionId = transactionID
 
                 orderDR.set(Order.getMapFromOrder(order)).addOnSuccessListener {
                     result.isSuccess = true
@@ -175,6 +177,15 @@ object FirebaseApiManager {
             }
         }
     }
+
+    /*suspend fun placeOrderWithPendingPayment(){
+    }
+
+    suspend fun setTransactionIdToOrder(){
+    }
+
+    suspend fun deleteOrderFromID(){
+    }*/
 
     suspend fun getInProgressOrder(): CustomeResult {
         val orderDR = foodDB.collection(BaseUrl.ORDER)
