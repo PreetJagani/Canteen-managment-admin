@@ -23,10 +23,7 @@ class HomeFragment : Fragment() {
     ): View? {
 
         /*scope.launch {
-            FirebaseApiManager.getOngoingOrder().let {
-                val data = it.data as List<Order>
-                for(a in data)
-                    Log.d("Order",a.toString())
+            FirebaseApiManager.getReadyOrder().let {
 
             }
         }*/

@@ -6,6 +6,7 @@ import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -145,10 +146,11 @@ object FirebaseApiManager {
     }
 
     suspend fun placeOrderInSystem(
-        foodList: MutableList<CartFood>
+        foodList: MutableList<CartFood>,
+        transactionID : String
     ): CustomeResult {
 
-        var result: CustomeResult = CustomeResult()
+        val result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
             try {
                 val orderDR = foodDB.collection(BaseUrl.ORDER).document()
@@ -158,6 +160,7 @@ object FirebaseApiManager {
                 order.status = Order.Status.INPROGRESS.value
                 order.uId = uid
                 order.time = Date().time
+                order.transactionId = transactionID
 
                 orderDR.set(Order.getMapFromOrder(order)).addOnSuccessListener {
                     result.isSuccess = true
@@ -175,14 +178,22 @@ object FirebaseApiManager {
         }
     }
 
-    suspend fun getOngoingOrder(): CustomeResult {
+    /*suspend fun placeOrderWithPendingPayment(){
+    }
+
+    suspend fun setTransactionIdToOrder(){
+    }
+
+    suspend fun deleteOrderFromID(){
+    }*/
+
+    suspend fun getInProgressOrder(): CustomeResult {
         val orderDR = foodDB.collection(BaseUrl.ORDER)
 
-        var uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -197,16 +208,14 @@ object FirebaseApiManager {
             }
 
         return result
-
     }
-
-    suspend fun getAllOrders(): CustomeResult {
+    suspend fun getReadyOrder(): CustomeResult {
         val orderDR = foodDB.collection(BaseUrl.ORDER)
 
-        var uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
+            .whereEqualTo(Order.STATUS, Order.Status.READY.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -220,6 +229,28 @@ object FirebaseApiManager {
                 Order.getOrderFromDocumentSnapShot(it.data!!)
             }
 
+        return result
+    }
+
+    suspend fun getAllPastOrders(): CustomeResult {
+        val orderDR = foodDB.collection(BaseUrl.ORDER)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR.whereEqualTo(Order.UID, uid)
+            .whereEqualTo(Order.STATUS,Order.Status.SUCCESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
         return result
 
     }
