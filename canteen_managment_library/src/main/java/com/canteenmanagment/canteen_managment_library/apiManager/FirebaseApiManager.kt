@@ -16,13 +16,14 @@ import java.util.*
 
 object FirebaseApiManager {
 
-    private val foodDB = FirebaseFirestore.getInstance()
-    private val uid = FirebaseAuth.getInstance().uid
+    private val DB = FirebaseFirestore.getInstance()
+//    private val uid = FirebaseAuth.getInstance().uid
+    private val uid = "test113243"
 
     suspend fun storeFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
 
-            val foodDR = foodDB.collection(BaseUrl.FOOD).document()
+            val foodDR = DB.collection(BaseUrl.FOOD).document()
 
             food.id = foodDR.id
             var map = Food.getMapFromFood(food)
@@ -44,7 +45,7 @@ object FirebaseApiManager {
     suspend fun updateFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
 
-            val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
+            val foodDR = food.id?.let { DB.collection(BaseUrl.FOOD).document(it) }
 
 
             var map = Food.getMapFromFood(food)
@@ -66,7 +67,7 @@ object FirebaseApiManager {
     suspend fun deleteFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
 
-            val foodDR = food.id?.let { foodDB.collection(BaseUrl.FOOD).document(it) }
+            val foodDR = food.id?.let { DB.collection(BaseUrl.FOOD).document(it) }
 
             var result = CustomeResult()
 
@@ -84,7 +85,7 @@ object FirebaseApiManager {
 
 
     suspend fun getAllFoodFromCategory(category: String): List<Food> {
-        val foodDR = foodDB.collection(BaseUrl.FOOD)
+        val foodDR = DB.collection(BaseUrl.FOOD)
 
         var result: CustomeResult = CustomeResult()
 
@@ -147,13 +148,13 @@ object FirebaseApiManager {
 
     suspend fun placeOrderInSystem(
         foodList: MutableList<CartFood>,
-        transactionID : String
+        transactionID: String
     ): CustomeResult {
 
         val result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
             try {
-                val orderDR = foodDB.collection(BaseUrl.ORDER).document()
+                val orderDR = DB.collection(BaseUrl.ORDER).document()
                 val order = Order()
                 order.id = orderDR.id
                 order.foodList = foodList
@@ -188,12 +189,13 @@ object FirebaseApiManager {
     }*/
 
     suspend fun getInProgressOrder(): CustomeResult {
-        val orderDR = foodDB.collection(BaseUrl.ORDER)
+        val orderDR = DB.collection(BaseUrl.ORDER)
 
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -209,13 +211,15 @@ object FirebaseApiManager {
 
         return result
     }
+
     suspend fun getReadyOrder(): CustomeResult {
-        val orderDR = foodDB.collection(BaseUrl.ORDER)
+        val orderDR = DB.collection(BaseUrl.ORDER)
 
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.READY.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
+            .whereEqualTo(Order.STATUS, Order.Status.READY.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -233,12 +237,13 @@ object FirebaseApiManager {
     }
 
     suspend fun getAllPastOrders(): CustomeResult {
-        val orderDR = foodDB.collection(BaseUrl.ORDER)
+        val orderDR = DB.collection(BaseUrl.ORDER)
 
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS,Order.Status.SUCCESS.value).orderBy(Order.TIME,Query.Direction.DESCENDING)
+            .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 result.isSuccess = true
@@ -255,10 +260,79 @@ object FirebaseApiManager {
 
     }
 
+    suspend fun getAllFavouriteFoods(): CustomeResult {
+
+        val foodDR = DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = foodDR.get().addOnSuccessListener {
+            result.isSuccess = true
+        }.addOnFailureListener {
+            result.isSuccess = false
+            result.message = it.message.toString()
+        }.await()
+
+        if(result.isSuccess)
+            result.data = snapshot.documents.map {
+                Food.getFoodFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+    }
+
+    suspend fun addFoodToFavourite(food: Food): CustomeResult {
+        return withContext(Dispatchers.IO) {
+
+            val favFoodDR =
+                DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
+                    .document(food.id!!)
+
+            val map = Food.getMapFromFood(food)
+
+            val result = CustomeResult()
+
+            favFoodDR.set(map).addOnCompleteListener {
+                result.isSuccess = true
+                result.message = "Food Added Successfully"
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message ?: "Error"
+            }.await()
+
+            return@withContext result
+        }
+    }
+
+    suspend fun removeFoodFromFavourite(food: Food): CustomeResult {
+
+        return withContext(Dispatchers.IO) {
+
+            val favFoodDR =
+                DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
+                    .document(food.id!!)
+
+            var result = CustomeResult()
+
+            favFoodDR.delete().addOnCompleteListener {
+                result.isSuccess = true
+                result.message = "Food Delete Successfully"
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message ?: "Error"
+            }.await()
+
+            return@withContext result
+        }
+
+    }
+
 
     object BaseUrl {
         const val FOOD = "Food"
         const val ORDER = "Order"
+        const val USER = "User"
+        const val FAVOURITE = "Favourite"
     }
 
 }

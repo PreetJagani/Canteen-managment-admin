@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.canteenManagment.admin.R
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
+import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +23,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        /*scope.launch {
-            FirebaseApiManager.getReadyOrder().let {
-
+        scope.launch {
+            FirebaseApiManager.addFoodToFavourite(Food(id = "123",name = "test",price = 1,imageUrl = "asd",category = "cat1",available = true,availableTimes = listOf<String>(),counterNumber = 1)).let {
+                //Log.d("FavFood",it.)
             }
-        }*/
+        }
 
 
         return inflater.inflate(R.layout.fragment_home, container, false)
