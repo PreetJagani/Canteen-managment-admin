@@ -17,8 +17,8 @@ import java.util.*
 object FirebaseApiManager {
 
     private val DB = FirebaseFirestore.getInstance()
-//    private val uid = FirebaseAuth.getInstance().uid
-    private val uid = "test113243"
+    private val uid = FirebaseAuth.getInstance().uid
+    //private val uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
 
     suspend fun storeFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
@@ -326,6 +326,44 @@ object FirebaseApiManager {
         }
 
     }
+
+    suspend fun getAllPastFoods(): CustomeResult {
+
+        val ORDER_LIMIT = 5
+
+        val orderDR = DB.collection(BaseUrl.ORDER)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR.whereEqualTo(Order.UID, uid)
+            .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
+            .limit(ORDER_LIMIT.toLong())
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess) {
+            val orderList = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+            val foodList : MutableList<Food> = mutableListOf<Food>()
+            for(order in orderList)
+                for(cartFood in order.foodList?: listOf<CartFood>())
+                    if(foodList.indexOf(cartFood.food) == -1)
+                        foodList.add(cartFood.food)
+
+            result.data = foodList
+        }
+
+        return result
+    }
+
 
 
     object BaseUrl {
