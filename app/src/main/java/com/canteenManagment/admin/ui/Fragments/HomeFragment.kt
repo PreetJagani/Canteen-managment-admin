@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.canteenManagment.admin.R
 import com.canteenmanagment.canteen_managment_library.apiManager.FirebaseApiManager
+import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,9 +24,14 @@ class HomeFragment : Fragment() {
     ): View? {
 
         /*scope.launch {
-            FirebaseApiManager.getReadyOrder().let {
+            FirebaseApiManager.getAllPastFoods().let {
+                if(it.isSuccess)
+                    Log.d("Fav",(it.data as List<Food>).size.toString())
 
             }
+
+            //Food(id = "123",name = "test",price = 1,imageUrl = "asd",category = "cat1",available = true,availableTimes = listOf<String>(),counterNumber = 1)
+
         }*/
 
 
