@@ -23,16 +23,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        /*scope.launch {
+        scope.launch {
             FirebaseApiManager.getAllPastFoods().let {
-                if(it.isSuccess)
-                    Log.d("Fav",(it.data as List<Food>).size.toString())
+                /*if(it.isSuccess)
+                    Log.d("Fav",it.data.toString())*/
 
             }
 
             //Food(id = "123",name = "test",price = 1,imageUrl = "asd",category = "cat1",available = true,availableTimes = listOf<String>(),counterNumber = 1)
 
-        }*/
+        }
 
 
         return inflater.inflate(R.layout.fragment_home, container, false)
