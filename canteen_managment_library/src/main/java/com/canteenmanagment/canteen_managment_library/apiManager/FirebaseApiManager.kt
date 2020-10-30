@@ -18,8 +18,8 @@ import java.util.*
 object FirebaseApiManager {
 
     private val DB = FirebaseFirestore.getInstance()
-//    private val uid = FirebaseAuth.getInstance().uid
-    private val uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
+    private val uid = FirebaseAuth.getInstance().uid
+//    private val uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
 
     suspend fun storeFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
