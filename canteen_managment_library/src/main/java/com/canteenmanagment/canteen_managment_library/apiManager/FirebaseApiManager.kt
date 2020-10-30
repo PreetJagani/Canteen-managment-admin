@@ -356,10 +356,8 @@ object FirebaseApiManager {
             val foodList : MutableList<Food> = mutableListOf<Food>()
             for(order in orderList)
                 for(cartFood in order.foodList?: listOf<CartFood>())
-                    if(foodList.indexOf(cartFood.food) == -1) {
+                    if(foodList.indexOf(cartFood.food) == -1)
                         foodList.add(cartFood.food)
-                        Log.d("Fav",cartFood.food.imageUrl?:"null url")
-                    }
 
             result.data = foodList
         }
