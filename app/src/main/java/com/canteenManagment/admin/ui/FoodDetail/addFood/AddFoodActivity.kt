@@ -90,7 +90,7 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
                     food.counterNumber = binding.SPCounterNumber.selectedItemPosition + 1
                     food.category = intent.getStringExtra(CATEGORY_NAME)
                     food.available = true
-                    food.imageUrl = it.data.toString()
+                    food.imageurl = it.data.toString()
 
                     food.availableTimes = getSelectedChip()
                     Log.d("AvailableTimes",food.availableTimes.toString())
