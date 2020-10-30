@@ -25,8 +25,8 @@ class HomeFragment : Fragment() {
 
         /*scope.launch {
             FirebaseApiManager.getAllPastFoods().let {
-                if(it.isSuccess)
-                    Log.d("Fav",(it.data as List<Food>).size.toString())
+                *//*if(it.isSuccess)
+                    Log.d("Fav",it.data.toString())*//*
 
             }
 

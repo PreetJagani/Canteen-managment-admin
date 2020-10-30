@@ -1,6 +1,7 @@
 package com.canteenmanagment.canteen_managment_library.apiManager
 
 import android.net.Uri
+import android.util.Log
 import com.canteenmanagment.canteen_managment_library.models.CartFood
 import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
@@ -18,7 +19,7 @@ object FirebaseApiManager {
 
     private val DB = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().uid
-    //private val uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
+//    private val uid = "TrtfkHPfrUSK8kkaNWnXbL0DBzK2"
 
     suspend fun storeFoodData(food: Food): CustomeResult {
         return withContext(Dispatchers.IO) {
@@ -355,8 +356,10 @@ object FirebaseApiManager {
             val foodList : MutableList<Food> = mutableListOf<Food>()
             for(order in orderList)
                 for(cartFood in order.foodList?: listOf<CartFood>())
-                    if(foodList.indexOf(cartFood.food) == -1)
+                    if(foodList.indexOf(cartFood.food) == -1) {
                         foodList.add(cartFood.food)
+                        Log.d("Fav",cartFood.food.imageUrl?:"null url")
+                    }
 
             result.data = foodList
         }
