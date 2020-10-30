@@ -64,7 +64,7 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
 
 
         Glide.with(this)
-            .load(food.imageUrl)
+            .load(food.imageurl)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop()
             .placeholder(R.drawable.error_image)
@@ -147,7 +147,7 @@ class EditFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickL
                     food.availableTimes = getSelectedChip()
 
                     if(it.data != null)
-                        food.imageUrl = it.data.toString()
+                        food.imageurl = it.data.toString()
 
                     progressDialog.startDialog()
 
