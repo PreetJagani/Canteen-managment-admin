@@ -1,7 +1,6 @@
 package com.canteenmanagment.canteen_managment_library.apiManager
 
 import android.net.Uri
-import android.util.Log
 import com.canteenmanagment.canteen_managment_library.models.CartFood
 import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
@@ -274,7 +273,7 @@ object FirebaseApiManager {
             result.message = it.message.toString()
         }.await()
 
-        if(result.isSuccess)
+        if (result.isSuccess)
             result.data = snapshot.documents.map {
                 Food.getFoodFromDocumentSnapShot(it.data!!)
             }
@@ -353,10 +352,10 @@ object FirebaseApiManager {
                 Order.getOrderFromDocumentSnapShot(it.data!!)
             }
 
-            val foodList : MutableList<Food> = mutableListOf<Food>()
-            for(order in orderList)
-                for(cartFood in order.foodList?: listOf<CartFood>())
-                    if(foodList.indexOf(cartFood.food) == -1)
+            val foodList: MutableList<Food> = mutableListOf<Food>()
+            for (order in orderList)
+                for (cartFood in order.foodList ?: listOf<CartFood>())
+                    if (foodList.indexOf(cartFood.food) == -1)
                         foodList.add(cartFood.food)
 
             result.data = foodList
@@ -365,6 +364,28 @@ object FirebaseApiManager {
         return result
     }
 
+    suspend fun getFoodListFromTime(timeLabel : String): CustomeResult {
+
+        val foodDR = DB.collection(BaseUrl.FOOD)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot =
+            foodDR.whereArrayContains(Food.AVAILABLE_TIMES, timeLabel)
+                .whereEqualTo(Food.AVAILABLE, true).orderBy(Food.CATEGORY).get().addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Food.getFoodFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+    }
 
 
     object BaseUrl {
