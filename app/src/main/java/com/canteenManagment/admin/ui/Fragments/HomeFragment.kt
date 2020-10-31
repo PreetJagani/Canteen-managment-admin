@@ -24,10 +24,9 @@ class HomeFragment : Fragment() {
     ): View? {
 
         /*scope.launch {
-            FirebaseApiManager.getAllPastFoods().let {
-                *//*if(it.isSuccess)
-                    Log.d("Fav",it.data.toString())*//*
-
+            FirebaseApiManager.test("Afternoon").let {
+                if(it.isSuccess)
+                    Log.d("Fav",it.data.toString())
             }
 
             //Food(id = "123",name = "test",price = 1,imageUrl = "asd",category = "cat1",available = true,availableTimes = listOf<String>(),counterNumber = 1)
