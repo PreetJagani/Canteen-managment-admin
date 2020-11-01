@@ -387,6 +387,30 @@ object FirebaseApiManager {
         return result
     }
 
+    suspend fun getAllInProgressOrder(): CustomeResult {
+        val orderDR = DB.collection(BaseUrl.ORDER)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+    }
+
 
     object BaseUrl {
         const val FOOD = "Food"

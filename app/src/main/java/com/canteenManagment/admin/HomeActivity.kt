@@ -4,9 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import com.canteenManagment.admin.BaseActivity.BaseActivity
-import com.canteenManagment.admin.ui.Fragments.HomeFragment
+import com.canteenManagment.admin.ui.Fragments.Home.HomeFragment
 import com.canteenManagment.admin.ui.Fragments.MenuFragment
-import com.canteenManagment.admin.ui.Fragments.ProfileFragment
 import com.canteenManagment.admin.databinding.ActivityHomeBinding
 
 class HomeActivity : BaseActivity() {
@@ -28,7 +27,7 @@ class HomeActivity : BaseActivity() {
             when(it){
                 R.id.home -> openFragment(HomeFragment())
                 R.id.menu -> openFragment(MenuFragment())
-                R.id.profile -> openFragment(ProfileFragment())
+//                R.id.profile -> openFragment(ProfileFragment())
             }
         }
 

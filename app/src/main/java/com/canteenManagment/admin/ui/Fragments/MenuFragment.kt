@@ -24,7 +24,7 @@ class MenuFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.d("MenuFragment","menu started")
+
         _binding = FragmentMenuBinding.inflate(inflater,container,false)
 
 
@@ -44,7 +44,7 @@ class MenuFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.CL4.setOnLongClickListener(this)
 
 
-        return binding?.root
+        return binding.root
     }
 
     override fun onClick(v: View?) {
