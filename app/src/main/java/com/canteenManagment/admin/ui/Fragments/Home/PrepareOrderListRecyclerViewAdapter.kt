@@ -11,7 +11,7 @@ import com.canteenManagment.admin.databinding.ItemPreparingFoodListLayoutBinding
 import com.canteenmanagment.canteen_managment_library.models.Food
 import com.canteenmanagment.canteen_managment_library.models.Order
 
-class PrepareOrderListRecyclerViewAdapter(val orderList : List<Order>) : RecyclerView.Adapter<PrepareOrderListRecyclerViewAdapter.ViewHolder>() {
+class PrepareOrderListRecyclerViewAdapter(val orderList : List<Order>, val makeOrderReady : (order : Order)-> Unit) : RecyclerView.Adapter<PrepareOrderListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -28,6 +28,10 @@ class PrepareOrderListRecyclerViewAdapter(val orderList : List<Order>) : Recycle
             foodList += cartFood.food.name + " X ${cartFood.quantity}\n"
 
         holder.binding.TVFoodItems.text = foodList
+
+        holder.binding.BTReady.setOnClickListener {
+            makeOrderReady(orderList[position])
+        }
     }
 
     override fun getItemCount(): Int {

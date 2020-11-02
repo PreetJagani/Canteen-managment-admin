@@ -68,6 +68,9 @@ dependencies {
 
     implementation project(':canteen_managment_library')
 
+    //scan qr code
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+
 
 
 
