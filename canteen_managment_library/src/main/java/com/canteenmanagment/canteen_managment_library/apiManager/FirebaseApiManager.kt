@@ -364,7 +364,7 @@ object FirebaseApiManager {
         return result
     }
 
-    suspend fun getFoodListFromTime(timeLabel : String): CustomeResult {
+    suspend fun getFoodListFromTime(timeLabel: String): CustomeResult {
 
         val foodDR = DB.collection(BaseUrl.FOOD)
 
@@ -372,7 +372,8 @@ object FirebaseApiManager {
 
         val snapshot =
             foodDR.whereArrayContains(Food.AVAILABLE_TIMES, timeLabel)
-                .whereEqualTo(Food.AVAILABLE, true).orderBy(Food.CATEGORY).get().addOnSuccessListener {
+                .whereEqualTo(Food.AVAILABLE, true).orderBy(Food.CATEGORY).get()
+                .addOnSuccessListener {
                     result.isSuccess = true
                 }.addOnFailureListener {
                     result.isSuccess = false
@@ -387,6 +388,98 @@ object FirebaseApiManager {
         return result
     }
 
+    suspend fun getAllInProgressOrder(): CustomeResult {
+        val orderDR = DB.collection(BaseUrl.ORDER)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR
+            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+            .orderBy(Order.TIME, Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener {
+                result.isSuccess = true
+            }.addOnFailureListener {
+                result.isSuccess = false
+                result.message = it.message.toString()
+            }.await()
+
+        if (result.isSuccess)
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+        return result
+    }
+
+    suspend fun makeOrderReady(order: Order): CustomeResult {
+
+        val result: CustomeResult = CustomeResult()
+        return withContext(Dispatchers.IO) {
+            try {
+                val orderDR = DB.collection(BaseUrl.ORDER).document(order.id!!)
+
+                order.status = Order.Status.READY.value
+
+                orderDR.set(Order.getMapFromOrder(order)).addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
+
+                result
+            } catch (e: Exception) {
+                result.isSuccess = false
+                result.message = e.message.toString()
+                result
+            }
+        }
+    }
+
+    suspend fun makeOrderSuccess(orderID: String): CustomeResult {
+
+        val result: CustomeResult = CustomeResult()
+        val orderDR = DB.collection(BaseUrl.ORDER).document(orderID)
+
+        val documentShot = orderDR.get().addOnSuccessListener {
+            result.isSuccess = true
+        }.addOnFailureListener {
+            result.isSuccess = false
+            result.message = it.message.toString()
+        }.await()
+
+        if (result.isSuccess){
+            val order = documentShot.data?.let { Order.getOrderFromDocumentSnapShot(it) }
+
+            if(order?.status.equals(Order.Status.READY.value)){
+                order?.status = Order.Status.SUCCESS.value
+
+                val map = Order.getMapFromOrder(order!!)
+
+                orderDR.set(map).addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
+
+            }
+            else{
+                result.isSuccess = false
+                result.message = "Order already given"
+            }
+
+
+
+
+
+        }
+
+        return result
+
+
+    }
 
     object BaseUrl {
         const val FOOD = "Food"
