@@ -50,7 +50,7 @@ class FoodListActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadData() {
         scope.launch {
-            FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)).let {
+            FirebaseApiManager.getAllFoodFromCategory(intent.getStringExtra(CATEGORY_NAME)!!).let {
                 binding.SRRefreshLayout.isRefreshing = false
                 foodList = it
                 binding.RVFoodList.visibility = View.VISIBLE

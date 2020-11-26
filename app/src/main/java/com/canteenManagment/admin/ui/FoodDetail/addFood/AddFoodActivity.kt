@@ -144,6 +144,8 @@ class AddFoodActivity : BaseActivity(), View.OnClickListener, View.OnLongClickLi
             }
 
 
+
+
         } else
             return CustomeResult(false,"Please Select image")
 

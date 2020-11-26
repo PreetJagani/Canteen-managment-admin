@@ -39,11 +39,14 @@ class HomeFragment : Fragment() {
 
         progressDialog = CustomProgressBar(activity as Activity)
         loadData()
+        //test()
 
         binding.IMScan.setOnClickListener {
             val intent = Intent(context,ScanActivity::class.java)
             startActivity(intent)
         }
+
+
 
         return binding.root
     }
@@ -76,15 +79,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun test(){
-        /*scope.launch {
-            FirebaseApiManager.test("Afternoon").let {
+        scope.launch {
+            FirebaseApiManager.getRecommendedFood("1H3uTXfutCgxsnsgBIW4")
+                .let {
                 if(it.isSuccess)
-                    Log.d("Fav",it.data.toString())
+                    Log.d("Fav",(it.data as List<Food>).toString())
             }
 
             //Food(id = "123",name = "test",price = 1,imageUrl = "asd",category = "cat1",available = true,availableTimes = listOf<String>(),counterNumber = 1)
 
-        }*/
+        }
     }
 
     override fun onDestroyView() {

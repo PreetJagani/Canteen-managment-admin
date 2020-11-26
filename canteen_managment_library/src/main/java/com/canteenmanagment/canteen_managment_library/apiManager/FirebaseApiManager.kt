@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.HashMap
 
 object FirebaseApiManager {
 
@@ -105,9 +106,9 @@ object FirebaseApiManager {
     }
 
     suspend fun uploadFile(
-        fileURI: Uri,
-        fileName: String,
-        uploadPath: String
+            fileURI: Uri,
+            fileName: String,
+            uploadPath: String
     ): CustomeResult {
         var result: CustomeResult = CustomeResult()
         return withContext(Dispatchers.IO) {
@@ -116,7 +117,7 @@ object FirebaseApiManager {
                 var downloadUrl: String? = null
 
                 val reference: StorageReference? =
-                    FirebaseStorage.getInstance().getReference(uploadPath)
+                        FirebaseStorage.getInstance().getReference(uploadPath)
 
                 val mref = reference!!.child(fileName)
 
@@ -147,8 +148,8 @@ object FirebaseApiManager {
     }
 
     suspend fun placeOrderInSystem(
-        foodList: MutableList<CartFood>,
-        transactionID: String
+            foodList: MutableList<CartFood>,
+            transactionID: String
     ): CustomeResult {
 
         val result: CustomeResult = CustomeResult()
@@ -194,15 +195,15 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
-            .orderBy(Order.TIME, Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                result.isSuccess = true
-            }.addOnFailureListener {
-                result.isSuccess = false
-                result.message = it.message.toString()
-            }.await()
+                .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
 
         if (result.isSuccess)
             result.data = snapshot.documents.map {
@@ -218,15 +219,15 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.READY.value)
-            .orderBy(Order.TIME, Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                result.isSuccess = true
-            }.addOnFailureListener {
-                result.isSuccess = false
-                result.message = it.message.toString()
-            }.await()
+                .whereEqualTo(Order.STATUS, Order.Status.READY.value)
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
 
         if (result.isSuccess)
             result.data = snapshot.documents.map {
@@ -242,15 +243,15 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
-            .orderBy(Order.TIME, Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                result.isSuccess = true
-            }.addOnFailureListener {
-                result.isSuccess = false
-                result.message = it.message.toString()
-            }.await()
+                .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
 
         if (result.isSuccess)
             result.data = snapshot.documents.map {
@@ -285,8 +286,8 @@ object FirebaseApiManager {
         return withContext(Dispatchers.IO) {
 
             val favFoodDR =
-                DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
-                    .document(food.id!!)
+                    DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
+                            .document(food.id!!)
 
             val map = Food.getMapFromFood(food)
 
@@ -309,8 +310,8 @@ object FirebaseApiManager {
         return withContext(Dispatchers.IO) {
 
             val favFoodDR =
-                DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
-                    .document(food.id!!)
+                    DB.collection(BaseUrl.USER).document(uid!!).collection(BaseUrl.FAVOURITE)
+                            .document(food.id!!)
 
             var result = CustomeResult()
 
@@ -336,16 +337,16 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR.whereEqualTo(Order.UID, uid)
-            .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
-            .orderBy(Order.TIME, Query.Direction.DESCENDING)
-            .limit(ORDER_LIMIT.toLong())
-            .get()
-            .addOnSuccessListener {
-                result.isSuccess = true
-            }.addOnFailureListener {
-                result.isSuccess = false
-                result.message = it.message.toString()
-            }.await()
+                .whereEqualTo(Order.STATUS, Order.Status.SUCCESS.value)
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .limit(ORDER_LIMIT.toLong())
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
 
         if (result.isSuccess) {
             val orderList = snapshot.documents.map {
@@ -371,14 +372,14 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot =
-            foodDR.whereArrayContains(Food.AVAILABLE_TIMES, timeLabel)
-                .whereEqualTo(Food.AVAILABLE, true).orderBy(Food.CATEGORY).get()
-                .addOnSuccessListener {
-                    result.isSuccess = true
-                }.addOnFailureListener {
-                    result.isSuccess = false
-                    result.message = it.message.toString()
-                }.await()
+                foodDR.whereArrayContains(Food.AVAILABLE_TIMES, timeLabel)
+                        .whereEqualTo(Food.AVAILABLE, true).orderBy(Food.CATEGORY).get()
+                        .addOnSuccessListener {
+                            result.isSuccess = true
+                        }.addOnFailureListener {
+                            result.isSuccess = false
+                            result.message = it.message.toString()
+                        }.await()
 
         if (result.isSuccess)
             result.data = snapshot.documents.map {
@@ -394,15 +395,15 @@ object FirebaseApiManager {
         val result: CustomeResult = CustomeResult()
 
         val snapshot = orderDR
-            .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
-            .orderBy(Order.TIME, Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                result.isSuccess = true
-            }.addOnFailureListener {
-                result.isSuccess = false
-                result.message = it.message.toString()
-            }.await()
+                .whereEqualTo(Order.STATUS, Order.Status.INPROGRESS.value)
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
 
         if (result.isSuccess)
             result.data = snapshot.documents.map {
@@ -449,10 +450,10 @@ object FirebaseApiManager {
             result.message = it.message.toString()
         }.await()
 
-        if (result.isSuccess){
+        if (result.isSuccess) {
             val order = documentShot.data?.let { Order.getOrderFromDocumentSnapShot(it) }
 
-            if(order?.status.equals(Order.Status.READY.value)){
+            if (order?.status.equals(Order.Status.READY.value)) {
                 order?.status = Order.Status.SUCCESS.value
 
                 val map = Order.getMapFromOrder(order!!)
@@ -464,28 +465,149 @@ object FirebaseApiManager {
                     result.message = it.message.toString()
                 }.await()
 
-            }
-            else{
+            } else {
                 result.isSuccess = false
                 result.message = "Order already given"
             }
 
 
-
-
-
         }
-
         return result
 
-
     }
+
+    suspend fun updateRecommendedFood() {
+
+        val orderDR = DB.collection(BaseUrl.ORDER)
+
+        val result: CustomeResult = CustomeResult()
+
+        val snapshot = orderDR
+                .orderBy(Order.TIME, Query.Direction.DESCENDING)
+                .limit(50)
+                .get()
+                .addOnSuccessListener {
+                    result.isSuccess = true
+                }.addOnFailureListener {
+                    result.isSuccess = false
+                    result.message = it.message.toString()
+                }.await()
+
+        if (result.isSuccess) {
+            result.data = snapshot.documents.map {
+                Order.getOrderFromDocumentSnapShot(it.data!!)
+            }
+
+            val orderList: List<Order> = result.data as List<Order>
+
+            val hasmap: HashMap<String, List<CartFood>> = HashMap()
+
+            for (order in orderList) {
+
+                val cartFoodList = order.foodList as MutableList<CartFood>
+
+                for (cartFood in cartFoodList) {
+
+                    val temp = mutableListOf<CartFood>()
+                    for (cartFood4 in cartFoodList)
+                        temp.add(cartFood4)
+
+                    temp.remove(cartFood)
+
+                    for (i in 0 until temp.size)
+                        temp[i].quantity = 1
+
+                    if (hasmap[cartFood.food.id!!].isNullOrEmpty()) {
+                        hasmap[cartFood.food.id!!] = temp
+                    } else {
+                        var currentFoodList = hasmap[cartFood.food.id!!]!!
+
+                        for (i in 0 until temp.size) {
+
+                            var flag = true
+                            for (j in currentFoodList.indices) {
+                                if (currentFoodList[j].food.id?.equals(temp[i].food.id) ?: false) {
+                                    currentFoodList[j].quantity++
+                                    flag = false
+                                }
+                            }
+
+                            if (flag)
+                                (hasmap[cartFood.food.id!!] as MutableList<CartFood>).add(temp[i])
+                        }
+                    }
+                }
+            }
+
+//            Log.d("Recommended",hasmap.toString())
+
+            val finalHashMap: HashMap<String, List<Food>> = HashMap()
+            for (a in hasmap) {
+
+                var sortedFoodList: MutableList<Food> = mutableListOf()
+                val sortedCartFoodList = a.value.sortedByDescending { it -> it.quantity }
+                //Log.d("Rec",sortedCartFoodList.toString())
+
+                for (cartFood in sortedCartFoodList)
+                    sortedFoodList.add(cartFood.food)
+
+                if (sortedFoodList.size > 3)
+                    sortedFoodList = sortedFoodList.subList(0, 2)
+
+                //Log.d("Rec",sortedFoodList.size.toString())
+                finalHashMap[a.key] = sortedFoodList
+
+            }
+
+            //Log.d("Recommended",finalHashMap.toString())
+
+            for (recommendedFood in finalHashMap) {
+
+                val foodCR = DB.collection(BaseUrl.FOOD).document(recommendedFood.key).collection(BaseUrl.RECOMMENDED_FOOD)
+
+
+                for (food in recommendedFood.value) {
+
+                    val map = Food.getMapFromFood(food)
+
+
+                    foodCR.document(food.id!!).set(map).addOnCompleteListener {
+                    }.addOnFailureListener {
+                    }.await()
+                }
+            }
+        }
+    }
+
+    suspend fun getRecommendedFood(foodId : String) : CustomeResult{
+        val result : CustomeResult = CustomeResult()
+
+        val foodDR = DB.collection(BaseUrl.FOOD).document(foodId).collection(BaseUrl.RECOMMENDED_FOOD)
+
+        var snapshot = foodDR.get().addOnSuccessListener {
+            result.isSuccess = true
+        }.addOnFailureListener {
+            result.isSuccess = false
+            result.message = it.message.toString()
+        }.await()
+
+        result.data = snapshot.documents.map {
+            Food.getFoodFromDocumentSnapShot(it.data!!)
+        }
+        return result
+    }
+
+    
 
     object BaseUrl {
         const val FOOD = "Food"
         const val ORDER = "Order"
         const val USER = "User"
         const val FAVOURITE = "Favourite"
+        const val RECOMMENDED_FOOD = "Recommended Food"
+
     }
 
 }
+
+
