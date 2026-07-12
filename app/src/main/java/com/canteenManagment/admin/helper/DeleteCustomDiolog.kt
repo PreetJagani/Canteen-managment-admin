@@ -7,10 +7,8 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
-import com.canteenManagment.admin.R
-import kotlinx.android.synthetic.main.progress_bar.view.*
+import com.canteenManagment.admin.databinding.DeleteCustomeDiologBinding
 import androidx.core.graphics.*
-import kotlinx.android.synthetic.main.delete_custome_diolog.view.*
 import androidx.core.graphics.drawable.toDrawable as toDrawable
 
 class DeleteCustomDiolog(val activity : Activity) {
@@ -21,16 +19,16 @@ class DeleteCustomDiolog(val activity : Activity) {
 
         var dialog = AlertDialog.Builder(activity)
 
-        var view = LayoutInflater.from(activity).inflate(R.layout.delete_custome_diolog,null)
+        val binding = DeleteCustomeDiologBinding.inflate(LayoutInflater.from(activity))
 
-        view.BT_cancel.setOnClickListener {
+        binding.BTCancel.setOnClickListener {
             alertDialog.dismiss()
         }
-        view.BT_delete.setOnClickListener {
+        binding.BTDelete.setOnClickListener {
             deleteFood()
         }
 
-        dialog.setView(view)
+        dialog.setView(binding.root)
 
         alertDialog = dialog.create()
         alertDialog.show()

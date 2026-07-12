@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import com.canteenManagment.admin.R
-import kotlinx.android.synthetic.main.progress_bar.view.*
 import androidx.core.graphics.*
 import androidx.core.graphics.drawable.toDrawable as toDrawable
 
